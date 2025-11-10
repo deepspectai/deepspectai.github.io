@@ -1,0 +1,45 @@
+---
+title: 'Directions for ML in Industrial CT'
+description: 'A brief outline of research directions worth exploring.'
+date: 2025-11-10
+tags: ['ct', 'ndt', 'ml']
+authors: ['nicolasstellwag']
+---
+
+Below is a list of research directions worth exploring in my opinion.
+
+_Note: Not all of these approaches are applicable to every setting, and most of them can be combined with each other._
+
+## Unsupervised anomaly detection
+
+“Normal”, _supervised_ machine learning models approximate a probability distribution $p(y \mid x)$ from training data $\{ (x_1, y_1), \dots, (x_n, y_n) \}$ where $x_i$ is a training sample (e.g. a CT scan) and $y_i$ corresponds to the sample’s label (e.g. a defect mask). In contrast, _unsupervised_ models learn to approximate the distribution $p(x)$ of samples from a dataset $\{ x_1, \dots, x_n \}$. Note that _no labels_ are required here. By decomposing a CT scan into a sequence of patches (small subvolumes) $x_i = (x_{i,1}, \dots, x_{i,k})$, unsupervised models can be used to locate an anomaly at patch $j$ if $p(x_{i,j})$ is low.
+
+Therefore, in cases where a rough localization of defects (patch-level instead of voxel-level) is acceptable, unsupervised anomaly detection can be employed to detect defects without requiring labeled training data. Another advantage is that the training data must consist of defect-free scans instead of scans of flawed parts, which should be available in larger quantity or at least easier to obtain.
+
+This has already been done in the medical domain [@pinayaUnsupervised2022], but there has not been much follow-up work because scaling performance on the heterogeneous distribution of medical scans (human bodies differ a lot) requires a lot of training data. This should not pose a problem in industrial settings, though. Initial experiments in NDT settings exist [@fraunhoferinstituteforintegratedcircuitsiisTwostages2023], but the slow inference time of these models likely renders the existing approaches infeasible for production use.
+
+The slow inference time is caused by the use of autoregressive models, which require one forward pass per patch. Autoregressive models are used because both mentioned approaches are heavily inspired by a model architecture originally used for image generation [@oordNeural2018], but _not_ necessary for anomaly detection. By replacing them with more efficient approaches, one should be able to achieve similar inference times to more efficient, supervised models.
+
+## Joining reconstruction and analysis
+
+Traditionally, volume reconstruction and volume analysis have been strictly separate steps. There is work on reconstruction operators that can be integrated into machine learning models [@PYRONN2019]. In that case, the model does not just learn the downstream task (e.g. defect detection), but also modifies the reconstruction operation itself to obtain the most representative volume for the task at hand. In case of purely machine learning based inspection, this could allow for the use of fewer projection images, lower volume resolutions, and reduce I/O, thereby speeding up the end-to-end process significantly.
+
+## Quantization and pruning
+
+In the context of machine learning, model _quantization_ refers to using lower-precision numerical representations (e.g. 8-bit ints rather than 32-bit floats) for model parameters and internal data representations, enabling faster and more memory-efficient model training and inference. _Pruning_ means removing insignificant parameters after the model finished training, reducing inference time and memory. Both techniques are commonly employed in all sorts of state-of-the-art architectures and implementations are available for 3D voxel-grid settings [@paschali3DQ2019; @suiPruning2025]. Still, they remain underexplored in industrial CT settings.
+
+## Rotation and translation invariance
+
+The location and rotation of parts entering a CT scanner might not always be perfectly equal. Traditionally, that problem would be tackled by having all offsets and angles represented in the training data, which increases the dataset size and the need for training resources. A more promising approach might be experimenting with model architectures that inherently ignore the scan’s rotation and translation [@weiler3D2018; @geigerE3nn2022], even though they come with increased computational cost.
+
+## Uncertainty estimates
+
+_Uncertainty quantification_ methods can be used to compute confidence intervals around model predictions and reject or flag model decisions with low confidence. An example would be conformal prediction [@angelopoulosGentle2022], which increases the required amount of training data but introduces almost no overhead during inference time. Note that in contrast to global statistical guarantees like probability of detection, these methods provide sample-wise guarantees.
+
+## CT simulation
+
+Monte Carlo based CT simulation is already widely used to generate artificial training data for machine learning approaches, but it is computationally expensive which prevents it from being used to generate large-scale datasets. Therefore, it might make sense to generate large quantities of (lower quality) training data with Beer-Lambert simulation for pretraining, and fine-tune on real scans and Monte Carlo data afterward.
+
+## References
+
+

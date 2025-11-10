@@ -1,11 +1,11 @@
 import type { IconMap, SocialLink, Site } from '@/types'
 
 export const SITE: Site = {
-  title: 'astro-erudite',
+  title: 'DeepSpect',
   description:
-    'astro-erudite is a opinionated, unstyled blogging template—built with Astro, Tailwind, and shadcn/ui.',
-  href: 'https://astro-erudite.vercel.app',
-  author: 'jktrn',
+    'DeepSpect tries to make ML for industrial CT easy.',
+  href: 'https://deepspectai.github.io',
+  author: 'Nicolas Stellwag',
   locale: 'en-US',
   featuredPostCount: 2,
   postsPerPage: 3,
@@ -28,21 +28,25 @@ export const NAV_LINKS: SocialLink[] = [
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    href: 'https://github.com/jktrn',
+    href: 'https://github.com/deepspectai',
     label: 'GitHub',
   },
   {
-    href: 'https://twitter.com/enscry',
-    label: 'Twitter',
+    href: 'https://www.linkedin.com/company/deepspect',
+    label: 'LinkedIn',
   },
+  // {
+  //   href: 'https://twitter.com/enscry',
+  //   label: 'Twitter',
+  // },
   {
-    href: 'mailto:jason@enscribe.dev',
+    href: 'mailto:stellwagnicolas@gmail.com',
     label: 'Email',
   },
-  {
-    href: '/rss.xml',
-    label: 'RSS',
-  },
+  // {
+  //   href: '/rss.xml',
+  //   label: 'RSS',
+  // },
 ]
 
 export const ICON_MAP: IconMap = {

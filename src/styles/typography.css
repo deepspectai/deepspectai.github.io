@@ -143,6 +143,24 @@
     :where(.katex-display):not(:where(.not-prose, .not-prose *)) {
       @apply text-foreground/80 my-6 overflow-x-auto overflow-y-hidden py-2 tracking-normal;
     }
+
+    /* Highlight bibliography item when navigated via citation link */
+    :where(section#references .bibliography li):target {
+      @apply ring-2 ring-ring/60 rounded-md;
+      background: color-mix(in oklab, var(--ring) 12%, transparent);
+      scroll-margin-top: 7rem;
+      transition: background-color 200ms ease-in-out;
+    }
+
+    /* Fallbacks for common rehype-citation ID patterns */
+    :where(.prose [id^='ref-']):target,
+    :where(.prose [id^='bib-']):target,
+    :where(.prose li[id]):target {
+      @apply ring-2 ring-ring/60 rounded-md;
+      background: color-mix(in oklab, var(--ring) 12%, transparent);
+      scroll-margin-top: 7rem;
+      transition: background-color 200ms ease-in-out;
+    }
   }
 }
 
