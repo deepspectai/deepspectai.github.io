@@ -4,7 +4,7 @@ export const SITE: Site = {
   title: 'DeepSpect',
   description:
     'DeepSpect tries to make ML for industrial CT easy.',
-  href: 'https://deepspectai.github.io',
+  href: 'https://deepspect.ai',
   author: 'Nicolas Stellwag',
   locale: 'en-US',
   featuredPostCount: 2,

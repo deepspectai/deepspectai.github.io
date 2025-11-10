@@ -20,7 +20,7 @@ import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  site: 'https://deepspectai.github.io',
+  site: 'https://deepspect.ai',
   integrations: [
     expressiveCode({
       themes: ['github-light', 'github-dark'],
